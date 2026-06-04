@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Inquiry Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            background-color: #111111;
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #00ff88;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #1a1a1a;
+            border: 1px solid #333333;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #666666;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ff88' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        select option {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #00cc6a;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #333333;
+            color: #666666;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .message {
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background-color: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            display: block;
+        }
+
+        .message.error {
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            display: block;
+        }
+
+        .required {
+            color: #00ff88;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Get In Touch</h1>
+        
+        <form id="inquiryForm">
+            <div class="form-group">
+                <label for="firstName">First Name <span class="required">*</span></label>
+                <input 
+                    type="text" 
+                    id="firstName" 
+                    name="firstName" 
+                    required 
+                    placeholder="Enter your first name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="webUrl">Website URL <span class="required">*</span></label>
+                <input 
+                    type="url" 
+                    id="webUrl" 
+                    name="webUrl" 
+                    required 
+                    placeholder="https://yourwebsite.com"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="service">Select Service <span class="required">*</span></label>
+                <select id="service" name="service" required>
+                    <option value="">Choose a service...</option>
+                    <option value="UI UX Design">UI UX Design</option>
+                    <option value="Search Engine Optimization">Search Engine Optimization</option>
+                    <option value="Social Media Marketing">Social Media Marketing</option>
+                    <option value="Email Marketing and Automation">Email Marketing and Automation</option>
+                    <option value="B2B SAAS Marketing">B2B SAAS Marketing</option>
+                    <option value="E-commerce Marketing">E-commerce Marketing</option>
+                    <option value="Influencer Marketing">Influencer Marketing</option>
+                    <option value="Content Writing">Content Writing</option>
+                    <option value="Pay Per Click (SEM)">Pay Per Click (SEM)</option>
+                    <option value="Website Development">Website Development</option>
+                    <option value="SEM Services">SEM Services</option>
+                    <option value="Google Ads Specialist">Google Ads Specialist</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="contactNo">Contact Number <span class="required">*</span></label>
+                <input 
+                    type="tel" 
+                    id="contactNo" 
+                    name="contactNo" 
+                    required 
+                    placeholder="+1 (555) 123-4567"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="about">About <span class="required">*</span></label>
+                <textarea 
+                    id="about" 
+                    name="about" 
+                    required 
+                    placeholder="Tell us about your pain points and what do you expect from us..."
+                ></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // Initialize Supabase - Check if already initialized
+        let supabaseClient;
+        
+        if (!window.supabaseClient) {
+            const SUPABASE_URL = 'https://hazfudoashvafcgrmlkh.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhemZ1ZG9hc2h2YWZjZ3JtbGtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY0MjIsImV4cCI6MjA3NDU3MjQyMn0.2z0TE2-LevP0vMiT8Zs3t8empcGfk1elT__VjQXHn0w';
+            
+            window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+        
+        supabaseClient = window.supabaseClient;
+
+        // Form submission handler
+        document.getElementById('inquiryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            const formElement = this;
+            
+            console.log('Form submitted'); // Debug log
+            
+            // Get form data
+            const formData = {
+                first_name: document.getElementById('firstName').value.trim(),
+                Website_url: document.getElementById('webUrl').value.trim(),
+                Services_selected: document.getElementById('service').value,
+                Phone: document.getElementById('contactNo').value.trim(),
+                About_them: document.getElementById('about').value.trim(),
+                created_at: new Date().toISOString()
+            };
+
+            console.log('Form data:', formData); // Debug log
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            messageDiv.className = 'message';
+            messageDiv.textContent = '';
+
+            try {
+                // Insert data into Supabase
+                console.log('Sending to Supabase...'); // Debug log
+                
+                const { data, error } = await supabaseClient
+                    .from('Cold_leads')
+                    .insert([formData]);
+
+                if (error) {
+                    console.error('Supabase error:', error);
+                    throw error;
+                }
+
+                console.log('Success:', data); // Debug log
+
+                // Show success message
+                messageDiv.className = 'message success';
+                messageDiv.textContent = 'Thank you! Your inquiry has been submitted successfully.';
+                
+                // Reset form
+                formElement.reset();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'Error: ' + error.message;
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+            }
+        });
+
+        // Phone number formatting
+        document.getElementById('contactNo').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = `+${value.slice(0, 1)} (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 11)}`;
+            } else if (value.length >= 3) {
+                value = `+${value.slice(0, 1)} (${value.slice(1, 4)}) ${value.slice(4)}`;
+            } else if (value.length > 0) {
+                value = `+${value}`;
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>

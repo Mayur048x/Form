@@ -319,11 +319,11 @@
             }
         });
 
-        // Phone number formatting
+   // Phone number formatting
 document.getElementById('contactNo').addEventListener('input', function(e) {
     let value = e.target.value.replace(/\D/g, '');
     
-    // Remove +91 if user types it manually to avoid duplication
+    // Remove +91 or 91 if user types it manually to avoid duplication
     if (value.startsWith('91')) {
         value = value.slice(2);
     }
@@ -331,12 +331,8 @@ document.getElementById('contactNo').addEventListener('input', function(e) {
     // Limit to 10 digits
     value = value.slice(0, 10);
     
-    if (value.length >= 6) {
-        value = `+91 ${value.slice(0, 5)} ${value.slice(5)}`;
-    } else if (value.length >= 3) {
-        value = `+91 ${value.slice(0, 5)}`;
-    } else if (value.length > 0) {
-        value = `+91 ${value}`;
+    if (value.length > 0) {
+        value = `+91${value}`;
     }
     
     e.target.value = value;

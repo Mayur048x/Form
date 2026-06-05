@@ -320,17 +320,27 @@
         });
 
         // Phone number formatting
-        document.getElementById('contactNo').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 6) {
-                value = `+${value.slice(0, 1)} (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 11)}`;
-            } else if (value.length >= 3) {
-                value = `+${value.slice(0, 1)} (${value.slice(1, 4)}) ${value.slice(4)}`;
-            } else if (value.length > 0) {
-                value = `+${value}`;
-            }
-            e.target.value = value;
-        });
+document.getElementById('contactNo').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    // Remove +91 if user types it manually to avoid duplication
+    if (value.startsWith('91')) {
+        value = value.slice(2);
+    }
+    
+    // Limit to 10 digits
+    value = value.slice(0, 10);
+    
+    if (value.length >= 6) {
+        value = `+91 ${value.slice(0, 5)} ${value.slice(5)}`;
+    } else if (value.length >= 3) {
+        value = `+91 ${value.slice(0, 5)}`;
+    } else if (value.length > 0) {
+        value = `+91 ${value}`;
+    }
+    
+    e.target.value = value;
+});
     </script>
 </body>
 </html>

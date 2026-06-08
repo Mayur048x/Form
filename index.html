@@ -270,12 +270,12 @@
             
             // Get form data
             const formData = {
-                first_name: document.getElementById('firstName').value.trim(),
+                lead_name: document.getElementById('firstName').value.trim(),
                 Website_url: document.getElementById('webUrl').value.trim(),
-                Services_selected: document.getElementById('service').value,
-                Phone: document.getElementById('contactNo').value.trim(),
+                services_requested: document.getElementById('service').value,
+                phone: document.getElementById('contactNo').value.trim(),
                 About_them: document.getElementById('about').value.trim(),
-                created_at: new Date().toISOString()
+                last_activity_at: new Date().toISOString()
             };
 
             console.log('Form data:', formData); // Debug log
@@ -291,7 +291,7 @@
                 console.log('Sending to Supabase...'); // Debug log
                 
                 const { data, error } = await supabaseClient
-                    .from('Cold_leads')
+                    .from('leads')
                     .insert([formData]);
 
                 if (error) {
